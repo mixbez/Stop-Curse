@@ -1,5 +1,5 @@
 # Stop-Curse
-A small code which prevents you from being toxic in chats.
+A small code which prevents you from being toxic in chats. For me it allows not to regret about being salty and not be banned :)
 It uses tkinter, ctypes, pynput.keyboard, os.path - whatever they do
 To use the project you can either:
 1. Download StopCurse.py and launch it in Python
@@ -11,4 +11,4 @@ When you launch StopCurse you see a small window with one button. By pressing th
 
 
 How it works:
-https://youtu.be/V0HDBDBlfxI
+https://youtu.be/J5fjU1H71M4
