@@ -1,10 +1,17 @@
 import tkinter as tk
 import ctypes
 from pynput import keyboard
+from pynput.keyboard import Key, Controller
 from os import path
-global max_bad_len
 
+cont = Controller()
 badwords = []
+delete_on = True
+
+def deleteLast(word):
+    for i in range (len(word)):
+        cont.press(Key.backspace)
+        cont.release(Key.backspace)
 
 def ruToEng(word):
     symbols = (u"абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyz",
@@ -49,7 +56,6 @@ def on_press(key):
     try:
         k = key.char
         if ((ord(k) >= 65 and ord(k) < 123) or (ord(k) >= 1040 and ord(k) < 1104)):
-            print (ord(k))
             lastkeys.append(k)
             if len(lastkeys) > max_bad_len:
                 lastkeys.pop(0)
@@ -60,15 +66,16 @@ def on_press(key):
 def checkCurses (badwords, words):
     for word in words:
         if word in badwords:
+            if (delete_on):
+                deleteLast(word)
             alert = 'You typed ' + word[:1].upper() + '-word. Are you sure you want to send it to chat?'
-            print (alert)
             ctypes.windll.user32.MessageBoxW(0, alert, "Curse Alert")
         tr = ruToEng(word)
-        # print (word, tr)  bitch чмо xvj bitch ишеср
 
         if tr in badwords:
+            if (delete_on):
+                deleteLast(word)
             alert = 'You typed ' + tr[:1].upper() + '-word. Are you sure you want to send it to chat?'
-            print (alert)
             ctypes.windll.user32.MessageBoxW(0, alert, "Curse Alert")
 def createWords (main_word):
     all_words = []
@@ -84,6 +91,9 @@ def listToString (lst):
     return st
 
 def start():
+    global delete_on
+    #print (badwords)
+    delete_on = delete_bool.get()
     listener = keyboard.Listener(on_press=on_press)
     listener.start()  # start to listen on a separate thread
     listener.join()  # remove if main thread is polling self.keys
@@ -96,9 +106,15 @@ def addWord():
 
 root = tk.Tk()
 root.title('Stop Curse')
-#bitch
+
+delete_bool = tk.BooleanVar()
+
 canvas1 = tk.Canvas(root, width=300, height=300)
 canvas1.pack()
+
+
+deleteButton = tk.Checkbutton(root, text = "Delete swear imput", variable = delete_bool)
+canvas1.create_window(100, 50, window = deleteButton)
 
 button1 = tk.Button(text='Start (To turn off press Page Up!)', command=start, bg='brown', fg='white')
 canvas1.create_window(150, 150, window=button1)
